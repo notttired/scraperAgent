@@ -6,11 +6,16 @@ class BaseLoader(ABC):
         self.link = link
 
     @abstractmethod
-    def load_site(self) -> str:
+    async def load_site(self) -> str:
         """Fetch raw HTML from site URL"""
         pass
 
     @abstractmethod
-    def load_link(self, link: str) -> str:
+    async def load_link(self, link: str) -> str:
         """Fetch raw HTML from given site URL"""
+        pass
+
+    @abstractmethod
+    async def close(self):
+        """Releases resources for termination"""
         pass

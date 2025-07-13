@@ -1,18 +1,31 @@
 from loaders.base_loader import BaseLoader
-from selenium.webdriver.remote.webdriver import WebDriver
-from selenium import webdriver
-from selenium.webdriver.common.by import By
+from playwright.async_api import Browser, BrowserContext, Page, async_playwright
 
 class JSLoader(BaseLoader):
-    def __init__(self, driver: WebDriver, link: str):
+    def __init__(self, link: str, browser: Browser, context: BrowserContext, page: Page):
         super().__init__(link)
-        self.driver = webdriver.Chrome()
+        self.browser = browser
+        self.context = context
+        self.page = page
 
-    def load_site(self) -> str:
-        self.driver.get(self.link)
-        return self.driver.page_source
+    @classmethod
+    async def create(cls, link: str, browser: Browser):
+        async with async_playwright() as p:
+            browser = await p.chromium.launch()
+            context = await browser.new_context()
+            page = await context.new_page()
+            return cls(link, browser, context, page)
+
+    async def load_site(self) -> str:
+        await self.page.goto(self.link)
+        html: str = await self.page.content()
+        return html
+        
     
-    def load_link(self, link: str) -> str:
-        element = self.driver.find_element(By.LINK_TEXT, link)
-        element.click()
-        return self.driver.page_source
+    async def load_link(self, link: str) -> str:
+        await self.page.goto(self.link)
+        html: str = await self.page.content()
+        return html
+    
+    async def close(self):
+        pass
