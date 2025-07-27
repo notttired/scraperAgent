@@ -10,3 +10,7 @@ class BaseParser(ABC):
     @abstractmethod
     def parse(self, html_content: str, base_url: str = "") -> List[PageElement]:
         pass
+
+    @abstractmethod
+    def get_title(self, html_content: str):
+        pass

@@ -35,3 +35,7 @@ class BS4Parser(BaseParser):
                 elements.append(element)
         
         return elements
+    
+    def get_title(self, html_content: str):
+        soup = BeautifulSoup(html_content, "lxml")
+        return soup.title.string # type: ignore

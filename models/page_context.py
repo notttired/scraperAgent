@@ -11,7 +11,7 @@ class PageContext:
     current_goal: str
     extracted_data: Dict[str, Any] = {}
 
-def create_page_context(context):
+def create_page_context(context: Dict[str, Any]):
     return PageContext(
         context["url"],
         context["title"],
