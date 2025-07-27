@@ -1,31 +1,27 @@
 from loaders.base_loader import BaseLoader
 from playwright.async_api import Browser, BrowserContext, Page, async_playwright
+from loaders.context_pool import ContextPool
 
 class JSLoader(BaseLoader):
-    def __init__(self, link: str, browser: Browser, context: BrowserContext, page: Page):
-        super().__init__(link)
-        self.browser = browser
-        self.context = context
-        self.page = page
+    def __init__(self, context_pool):
+        self.context_pool: ContextPool = context_pool
+        self.context_id = 0
+        self.context = None
 
     @classmethod
-    async def create(cls, link: str, browser: Browser):
-        async with async_playwright() as p:
-            browser = await p.chromium.launch()
-            context = await browser.new_context()
-            page = await context.new_page()
-            return cls(link, browser, context, page)
+    def can_load(cls, url: str) -> bool:
+        return True
+    
+    async def load(self, url: str) -> str:
+        with self.context_pool.session() as page:
+            await page.goto(url)
+            html_content = await page.content()
+        return html_content
 
-    async def load_site(self) -> str:
-        await self.page.goto(self.link)
-        html: str = await self.page.content()
-        return html
-        
-    
-    async def load_link(self, link: str) -> str:
-        await self.page.goto(self.link)
-        html: str = await self.page.content()
-        return html
-    
-    async def close(self):
-        pass
+    async def load_with_context(self, url: str) -> str:
+        if not self.context:
+            self.context_id, self.context = await self.context_pool.acquire_context()
+        page = await self.context.new_page()
+        await page.goto(url)
+        html_content = await page.content()
+        return html_content

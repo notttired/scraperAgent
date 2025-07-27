@@ -2,18 +2,14 @@ from loaders.base_loader import BaseLoader
 import requests
 
 class StaticLoader(BaseLoader):
-    def __init__(self, link: str):
-        super().__init__(link)
+    @classmethod
+    def can_load(cls) -> bool:
+        return True
 
-    async def load_site(self) -> str:
-        response = requests.get(self.link)
+    async def load(self, url: str) -> str:
+        response = requests.get(url)
         text = response.text
         return text
-
-    async def load_link(self, link: str) -> str:
-        response = requests.get(link)
-        text = response.text
-        return text
-
-    async def close(self):
-        pass
+    
+    async def load_with_context(self, url: str) -> str:
+        return await self.load(url)

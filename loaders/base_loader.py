@@ -1,21 +1,18 @@
 from abc import ABC, abstractmethod
 
 class BaseLoader(ABC):
+
+    @classmethod
     @abstractmethod
-    def __init__(self, link: str):
-        self.link = link
+    def can_load(cls, url: str) -> bool:
+        pass
 
     @abstractmethod
-    async def load_site(self) -> str:
+    async def load(self, url: str) -> str:
         """Fetch raw HTML from site URL"""
         pass
 
     @abstractmethod
-    async def load_link(self, link: str) -> str:
-        """Fetch raw HTML from given site URL"""
-        pass
-
-    @abstractmethod
-    async def close(self):
-        """Releases resources for termination"""
+    async def load_with_context(self, url: str) -> str:
+        """Keeps current session and loads link"""
         pass
