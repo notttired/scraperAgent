@@ -9,7 +9,16 @@ class PageContext:
     elements: List[PageElement]
     navigation_history: List[str]
     current_goal: str
-    extracted_data: Dict[str, Any]
+    extracted_data: Dict[str, Any] = {}
+
+def create_page_context(context):
+    return PageContext(
+        context["url"],
+        context["title"],
+        context["elements"],
+        context["navigation_history"],
+        context["current_goal"]
+    )
 
 def create_llm_context(page_context: PageContext) -> str:
     """Create LLM-friendly page representation"""
