@@ -13,7 +13,7 @@ class LoaderManager:
         if self.browser:
             self.context_pool = ContextPool(browser, concurrency_limit)
 
-    async def get_loader(self):
+    async def get_loader(self) -> BaseLoader:
         if self.context_pool:
             return JSLoader(self.context_pool)
         else:

@@ -1,14 +1,25 @@
 from core.loader_manager import LoaderManager
-from core.extractor_manager import ExtractorManager
+from core.parser_manager import ParserManager
+from core.navigator_manager import NavigatorManager
 
 class BaseScraper:
-    async def __init__(self, loader_manager: LoaderManager, extractor_manager: ExtractorManager):
+    async def __init__(self, loader_manager: LoaderManager, parser_manager: ParserManager, navigator_manager: NavigatorManager):
         self.loader_manager = loader_manager # May take browser as argument
-        self.extractor_manager = extractor_manager
+        self.parser_manager = parser_manager
+        self.navigator_manager = navigator_manager
 
-    async def run(self):
+    async def run(self, url):
         loader = await self.loader_manager.get_loader()
-        extractor = self.extractor_manager.get_extractor()
+        parser = self.parser_manager.get_parser()
+        navigator = self.navigator_manager.get_navigator()
+
+        while True:
+            html_content = await loader.load(url)
+            relevant_elements = parser.parse(html_content)
+            # page_context = ...
+            # next_action = navigator.plan(page_context)
+            # if next_action.action.action_type == "Complete":
+            #     extract && break
         while not self.navigator.should_stop():
             
             extracted = self.extractors.extract(html)
