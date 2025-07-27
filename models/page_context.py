@@ -23,8 +23,8 @@ Navigation History: {' -> '.join(page_context.navigation_history)}
 INTERACTIVE ELEMENTS:
 """
     
-    clickable_elements = [e for e in page_context.elements if e.clickable]
-    for i, element in enumerate(clickable_elements[:20]):  # Limit to top 20
+    links = [e for e in page_context.elements if e.tag == "href"]
+    for i, element in enumerate(links[:20]):  # Limit to top 20
         context += f"{i+1}. {element.tag.upper()}: '{element.text}' (href: {element.attributes.get('href', 'N/A')})\n"
     
     context += "\nCONTENT SECTIONS:\n"

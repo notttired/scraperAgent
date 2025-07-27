@@ -1,19 +1,19 @@
-from extractors.base_extractor import BaseExtractor
+from parsers.base_parser import BaseParser
 from models.page_context import PageContext, create_llm_context
 from models.page_element import PageElement, create_page_element
 from typing import Dict, List, Any, Optional, cast
 from bs4 import BeautifulSoup, Tag
 
 
-class BS4Extractor(BaseExtractor):
+class BS4Parser(BaseParser):
     """Converts HTML/BeautifulSoup to LLM-friendly representation"""
     
     def __init__(self, important_tags: List[str], content_tags: List[str]):
         self.important_tags = important_tags
         self.content_tags = content_tags
         
-    def extract(self, html_content: str, base_url: str = "") -> List[PageElement]:
-        """Extract relevant elements from page"""
+    def parse(self, html_content: str, base_url: str = "") -> List[PageElement]:
+        """Parse and extract relevant elements from page"""
         soup = BeautifulSoup(html_content, "lxml")
         elements: List[PageElement] = []
         
