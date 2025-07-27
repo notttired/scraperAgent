@@ -1,10 +1,11 @@
+from extractors.base_extractor import BaseExtractor
 from models.page_context import PageContext, create_llm_context
 from models.page_element import PageElement, create_page_element
 from typing import Dict, List, Any, Optional, cast
 from bs4 import BeautifulSoup, Tag
 
 
-class HTMLSimplifier:
+class BS4Extractor(BaseExtractor):
     """Converts HTML/BeautifulSoup to LLM-friendly representation"""
     
     def __init__(self, important_tags: List[str], content_tags: List[str]):

@@ -1,4 +1,4 @@
-from extractors.html_simplifier import HTMLSimplifier
+from extractors.bs4_extractor import BS4Extractor
 from typing import List
 
 class ExtractorManager:
@@ -7,4 +7,4 @@ class ExtractorManager:
         self.content_tags = content_tags
 
     def get_extractor(self):
-        return HTMLSimplifier(self.important_tags, self.content_tags)
+        return BS4Extractor(self.important_tags, self.content_tags)
