@@ -1,28 +1,15 @@
+from models.action_type import ActionType
+from models.navigation_action import NavigationAction
+from models.page_context import PageContext, create_llm_context
+from models.page_element import PageElement
+
 from openai import OpenAI
 import json
-from dataclasses import dataclass
-from typing import Dict, List, cast
-from extractors.html_simplifier import PageContext, HTMLSimplifier
 from dotenv import load_dotenv
-from enum import Enum
+from typing import Dict, List, cast
+
 
 load_dotenv()
-
-class ActionType(Enum):
-    CLICK = "click"
-    SCROLL = "scroll"
-    EXTRACT = "extract"
-    SEARCH_PAGE = "search_page"
-    NAVIGATE_TO = "navigate_to"
-    COMPLETE = "complete"
-    
-@dataclass
-class NavigationAction:
-    action_type: ActionType
-    target: str
-    reasoning: str
-    confidence: float
-    metadata: Dict[str, str | List[str]] = {}
 
 class NavigationPlanner:
     """LLM-based navigation planning"""
@@ -33,8 +20,7 @@ class NavigationPlanner:
     def get_next_action(self, page_context: PageContext) -> NavigationAction:
         """Plan next navigation action based on current page state"""
         
-        html_simplifier = HTMLSimplifier()
-        llm_context = html_simplifier.create_llm_context(page_context)
+        llm_context = create_llm_context(page_context)
         
         system_prompt = """You are an intelligent web navigation assistant. Your task is to navigate websites to achieve specific goals."""
 

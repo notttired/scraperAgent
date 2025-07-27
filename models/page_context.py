@@ -11,7 +11,7 @@ class PageContext:
     current_goal: str
     extracted_data: Dict[str, Any]
 
-def create_llm_context(self, page_context: PageContext) -> str:
+def create_llm_context(page_context: PageContext) -> str:
     """Create LLM-friendly page representation"""
     context = f"""
 CURRENT PAGE ANALYSIS:
