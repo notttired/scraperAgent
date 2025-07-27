@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from playwright.async_api import Page
 
 class BaseLoader(ABC):
 
@@ -8,11 +9,11 @@ class BaseLoader(ABC):
         pass
 
     @abstractmethod
-    async def load(self, url: str) -> str:
+    async def get_html_content(self, url: str) -> str:
         """Fetch raw HTML from site URL"""
         pass
 
     @abstractmethod
-    async def load_with_context(self, url: str) -> str:
+    async def load_with_context(self, url: str) -> Page:
         """Keeps current session and loads link"""
         pass

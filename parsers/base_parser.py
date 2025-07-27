@@ -1,5 +1,6 @@
 from models.page_element import PageElement
 from abc import ABC, abstractmethod
+from playwright.async_api import Page
 from typing import List
 
 class BaseParser(ABC):
@@ -8,9 +9,9 @@ class BaseParser(ABC):
         pass
 
     @abstractmethod
-    def parse(self, html_content: str, base_url: str = "") -> List[PageElement]:
+    async def parse(self, page: Page, base_url: str = "") -> List[PageElement]:
         pass
 
     @abstractmethod
-    def get_title(self, html_content: str):
+    async def get_title(self, page: Page) -> str:
         pass

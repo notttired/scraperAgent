@@ -1,6 +1,8 @@
 from parsers.base_parser import BaseParser
 from models.page_context import PageContext, create_llm_context
 from models.page_element import PageElement, create_page_element
+
+from playwright.async_api import Page
 from typing import Dict, List, Any, Optional, cast
 from bs4 import BeautifulSoup, Tag
 
@@ -12,8 +14,9 @@ class BS4Parser(BaseParser):
         self.important_tags = important_tags
         self.content_tags = content_tags
         
-    def parse(self, html_content: str, base_url: str = "") -> List[PageElement]:
+    async def parse(self, page: Page, base_url: str = "") -> List[PageElement]:
         """Parse and extract relevant elements from page"""
+        html_content = await page.content()
         soup = BeautifulSoup(html_content, "lxml")
         elements: List[PageElement] = []
         
@@ -36,6 +39,7 @@ class BS4Parser(BaseParser):
         
         return elements
     
-    def get_title(self, html_content: str):
+    async def get_title(self, page: Page):
+        html_content = await page.content()
         soup = BeautifulSoup(html_content, "lxml")
         return soup.title.string # type: ignore
