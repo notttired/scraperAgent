@@ -6,6 +6,9 @@ from config.scraper_config import url, goal, important_tags, content_tags, concu
 
 from playwright.async_api import async_playwright
 from openai import OpenAI
+from dotenv import load_dotenv
+
+load_dotenv()
 
 async def run():
     async with async_playwright() as p:
