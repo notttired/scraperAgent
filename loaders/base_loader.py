@@ -9,7 +9,7 @@ class BaseLoader(ABC):
         pass
 
     @abstractmethod
-    async def get_html_content(self, url: str) -> str:
+    async def get_url_content(self, url: str) -> str:
         """Fetch raw HTML from site URL"""
         pass
 

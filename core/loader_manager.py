@@ -1,5 +1,4 @@
 from loaders.base_loader import BaseLoader
-from loaders.static_loader import StaticLoader
 from loaders.js_loader import JSLoader
 from loaders.context_pool import ContextPool
 from playwright.async_api import Browser
@@ -17,4 +16,4 @@ class LoaderManager:
         if self.context_pool:
             return JSLoader(self.context_pool)
         else:
-            return StaticLoader()
+            return JSLoader(self.context_pool) # PLACEHOLDER
