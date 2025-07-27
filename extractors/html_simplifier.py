@@ -11,7 +11,7 @@ class HTMLSimplifier:
         self.important_tags = important_tags
         self.content_tags = content_tags
         
-    def extract_page_elements(self, html_content: str, base_url: str = "") -> List[PageElement]:
+    def extract(self, html_content: str, base_url: str = "") -> List[PageElement]:
         """Extract relevant elements from page"""
         soup = BeautifulSoup(html_content, "lxml")
         elements: List[PageElement] = []
