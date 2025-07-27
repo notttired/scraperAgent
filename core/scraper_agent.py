@@ -9,6 +9,7 @@ from models.navigation_action import NavigationAction
 from models.page_context import PageContext, create_page_context
 
 from playwright.async_api import Page
+from typing import List
 
 class BaseScraper:
     page = None
@@ -47,6 +48,7 @@ class BaseScraper:
         self.navigator = self.navigator_manager.get_navigator()
 
         self.page = await self.loader.load_with_context(url)
+
         while True:
             self.title = self.parser.get_title(self.page)
             relevant_elements = self.parser.parse(self.page, self.url)
@@ -59,11 +61,14 @@ class BaseScraper:
             })
             next_action = self.navigator.plan(page_context)
             if next_action.action_type == "Complete":
+                return await self.page.screenshot(path='fullpage.png', full_page=True)
                 break
-                # extract
                 
             action_results = self.decide_action(next_action).execute_action()
-            if isinstance(List)
-
+            if type(action_results) == str: # Avoids linter error
+                return await self.page.screenshot(path='fullpage.png', full_page=True)
+            elif type(action_results) == Page:
+                self.page = action_results
+                
             if (self.title != self.navigation_history[-1]):
                 self.navigation_history.append(self.title)
