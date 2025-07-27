@@ -11,7 +11,7 @@ from models.page_context import PageContext, create_page_context
 from playwright.async_api import Page
 from typing import List
 
-class BaseScraper:
+class ScraperAgent:
     page = None
     url = ""
     title = ""
@@ -43,7 +43,7 @@ class BaseScraper:
         self.url = url
         self.current_goal = current_goal
 
-        self.loader = await self.loader_manager.get_loader() 
+        self.loader = self.loader_manager.get_loader() 
         self.parser = self.parser_manager.get_parser()
         self.navigator = self.navigator_manager.get_navigator()
 

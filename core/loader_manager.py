@@ -5,14 +5,12 @@ from playwright.async_api import Browser
 from typing import Optional
 
 class LoaderManager:
-    def __init__(self, browser: Optional[Browser] = None, concurrency_limit: int = 10):
+    def __init__(self, browser: Browser, concurrency_limit: int = 10):
         self.browser = browser
         self.concurrency_limit = 10
-        self.context_pool = None
-        if self.browser:
-            self.context_pool = ContextPool(browser, concurrency_limit)
+        self.context_pool = ContextPool(browser, concurrency_limit)
 
-    async def get_loader(self) -> BaseLoader:
+    def get_loader(self) -> BaseLoader:
         if self.context_pool:
             return JSLoader(self.context_pool)
         else:
